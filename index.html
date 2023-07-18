@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Greetings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      #greetingMessage {
+        font-size: 18px;
+        color: #555;
+        margin: 20px 0;
+        opacity: 0;
+      }
+
+      .buttonContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .button:hover {
+        background-color: #45a049;
+      }
+
+      .copyButton {
+        background-color: #008cba;
+      }
+
+      .copyButton:hover {
+        background-color: #007a99;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Birthday Greetings</h1>
+      <p id="greetingMessage"></p>
+      <button class="button" onclick="displayRandomGreeting()">
+        <i class="fas fa-random"></i> New
+      </button>
+      <button class="button copyButton" onclick="copyToClipboard()">
+        <span id="copyIcon"><i class="far fa-clipboard"></i></span>
+        <span id="copyText">Copy</span>
+      </button>
+    </div>
+
+    <script>
+      const birthdayGreetings = [
+        "Wishing you a day filled with laughter and joy, and a year ahead full of blessings and success. Happy Birthday!",
+        "May your special day be as wonderful as you are. Happy Birthday to a truly amazing person!",
+        "Another year older, wiser, and more fabulous! Happy Birthday, dear friend.",
+        "Cheers to you on your birthday! May this year be filled with love, happiness, and all your heart desires.",
+        "Sending you warmest wishes and a big hug on your special day. Happy Birthday!",
+        "On your birthday, I wish you all the happiness and love life has to offer. Have a fantastic day!",
+        "Here's to a year filled with adventure, laughter, and unforgettable moments. Happy Birthday!",
+        "May this birthday be the start of something beautiful. Wishing you the best on your special day.",
+        "Happy Birthday! May your day be as sweet and wonderful as you are.",
+        "To the coolest person I know, have a fantastic birthday filled with fun and joy.",
+        "Another year older, but you keep getting better with age. Happy Birthday!",
+        "Wishing you an extraordinary birthday filled with love and laughter.",
+        "May your birthday be the beginning of an amazing journey ahead. Happy Birthday!",
+        "Sending you lots of love and warm wishes on your special day. Happy Birthday!",
+        "Here's to another year of achievements and dreams coming true. Happy Birthday!",
+        "Birthdays are for making memories, so go out there and create some unforgettable ones. Happy Birthday!",
+        "You bring so much joy into the world. Wishing you an incredibly happy birthday!",
+        "Celebrate today with a heart full of gratitude and a smile that never fades. Happy Birthday!",
+        "Another year older, but you never cease to amaze us. Happy Birthday, superstar!",
+        "May your birthday be filled with happiness, love, and everything your heart desires.",
+        "Here's to a day filled with love, laughter, and all things wonderful. Happy Birthday!",
+        "To someone who makes every day brighter, have a wonderful birthday!",
+        "Celebrate this special day with the people you love and cherish. Happy Birthday!",
+        "May your birthday be filled with all the things that bring you joy and happiness.",
+        "Here's to another year of growth, wisdom, and blessings. Happy Birthday!",
+        "Wishing you a day that's as amazing and extraordinary as you are. Happy Birthday!",
+        "On your special day, I wish you all the success and happiness life has to offer. Happy Birthday!",
+        "Here's to a day of joy, laughter, and all the things that make you happy. Happy Birthday!",
+        "To a true inspiration, have an incredible birthday filled with love and happiness.",
+        "Happy Birthday! May this year be full of joy, laughter, and unforgettable memories.",
+        "Another year of blessings and exciting possibilities. Have a fantastic birthday!",
+        "May your birthday be the start of something wonderful and extraordinary. Happy Birthday!",
+        "Here's to a day of celebration and making memories that last a lifetime. Happy Birthday!",
+        "Sending you lots of love and warm wishes on your special day. Happy Birthday!",
+        "To the one who makes every day brighter, have a wonderful birthday!",
+        "Celebrate this special day with all the people who mean the world to you. Happy Birthday!",
+        "May your birthday be filled with joy, love, and all the things that bring you happiness.",
+        "Here's to a year of dreams coming true and adventures waiting to be explored. Happy Birthday!",
+        "Wishing you a day of happiness, surrounded by the people you love. Happy Birthday!",
+        "On your special day, know that you are loved and cherished by many. Happy Birthday!",
+        "To the one with a heart of gold, have an incredible birthday filled with love and laughter.",
+        "Happy Birthday! May this year be the best one yet, filled with all your heart's desires.",
+        "Another year of growth, wisdom, and blessings. Have a fantastic birthday!",
+        "May your birthday be as bright and beautiful as your soul. Happy Birthday!",
+        "To the one who lights up every room, have a fantastic birthday celebration!",
+        "Wishing you a day of joy, laughter, and all the things that make you happy. Happy Birthday!",
+        "May your birthday be a day of celebration, surrounded by love and warmth. Happy Birthday!",
+        "Here's to a year of love, laughter, and endless joy. Happy Birthday!",
+        "Sending you warm wishes and a big smile on your special day. Happy Birthday!",
+        "To a true gem, have an amazing birthday filled with love and happiness.",
+        "Happy Birthday! May this year be filled with dreams coming true and adventures ahead.",
+        "Another year of blessings and exciting possibilities. Have a fantastic birthday!",
+        "Wishing you a day of happiness, surrounded by the ones you love. Happy Birthday!",
+        "On your special day, may you be showered with love, joy, and good fortune. Happy Birthday!",
+        "To the one who brings joy to everyone around them, have a fantastic birthday!",
+        "Here's to another year of love, growth, and endless possibilities. Happy Birthday!",
+        "May your birthday be the start of an extraordinary journey filled with happiness and success.",
+        "Here's to a day of celebration and making memories that last a lifetime. Happy Birthday!",
+        "Sending you warmest wishes and a big smile on your special day. Happy Birthday!",
+        "To the one who makes every day brighter, have a wonderful birthday!",
+        "Celebrate this special day with all the people who mean the world to you. Happy Birthday!",
+        "May your birthday be filled with joy, love, and all the things that bring you happiness.",
+        "Here's to a year of dreams coming true and adventures waiting to be explored. Happy Birthday!",
+        "Wishing you a day of happiness, surrounded by the people you love. Happy Birthday!",
+        "On your special day, know that you are loved and cherished by many. Happy Birthday!",
+        "To the one with a heart of gold, have an incredible birthday filled with love and laughter.",
+        "Happy Birthday! May this year be the best one yet, filled with all your heart's desires.",
+        "Another year of growth, wisdom, and blessings. Have a fantastic birthday!",
+        "May your birthday be as bright and beautiful as your soul. Happy Birthday!",
+        "To the one who lights up every room, have a fantastic birthday celebration!",
+        "Wishing you a day of joy, laughter, and all the things that make you happy. Happy Birthday!",
+        "May your birthday be a day of celebration, surrounded by love and warmth. Happy Birthday!",
+        "Here's to a year of love, laughter, and endless joy. Happy Birthday!",
+        "Sending you warm wishes and a big smile on your special day. Happy Birthday!",
+        "To a true gem, have an amazing birthday filled with love and happiness.",
+        "Happy Birthday! May this year be filled with dreams coming true and adventures ahead.",
+        "Another year of blessings and exciting possibilities. Have a fantastic birthday!",
+        "Wishing you a day of happiness, surrounded by the ones you love. Happy Birthday!",
+        "On your special day, may you be showered with love, joy, and good fortune. Happy Birthday!",
+        "To the one who brings joy to everyone around them, have a fantastic birthday!",
+        "Here's to another year of love, growth, and endless possibilities. Happy Birthday!",
+        "May your birthday be the start of an extraordinary journey filled with happiness and success.",
+        "Here's to a day of celebration and making memories that last a lifetime. Happy Birthday!",
+        "Sending you warmest wishes and a big smile on your special day. Happy Birthday!",
+        "To the one who makes every day brighter, have a wonderful birthday!",
+        "Celebrate this special day with all the people who mean the world to you. Happy Birthday!",
+        "May your birthday be filled with joy, love, and all the things that bring you happiness.",
+        "Here's to a year of dreams coming true and adventures waiting to be explored. Happy Birthday!",
+        "Wishing you a day of happiness, surrounded by the people you love. Happy Birthday!",
+        "On your special day, know that you are loved and cherished by many. Happy Birthday!",
+        "To the one with a heart of gold, have an incredible birthday filled with love and laughter.",
+        "Happy Birthday! May this year be the best one yet, filled with all your heart's desires.",
+        "Another year of growth, wisdom, and blessings. Have a fantastic birthday!",
+        "May your birthday be as bright and beautiful as your soul. Happy Birthday!",
+        "To the one who lights up every room, have a fantastic birthday celebration!",
+        "Wishing you a day of joy, laughter, and all the things that make you happy. Happy Birthday!",
+        "May your birthday be a day of celebration, surrounded by love and warmth. Happy Birthday!",
+        "Here's to a year of love, laughter, and endless joy. Happy Birthday!",
+        "Sending you warm wishes and a big smile on your special day. Happy Birthday!",
+        "To a true gem, have an amazing birthday filled with love and happiness.",
+        "Happy Birthday! May this year be filled with dreams coming true and adventures ahead.",
+        "Another year of blessings and exciting possibilities. Have a fantastic birthday!",
+        "Wishing you a day of happiness, surrounded by the ones you love. Happy Birthday!",
+        "On your special day, may you be showered with love, joy, and good fortune. Happy Birthday!",
+        "To the one who brings joy to everyone around them, have a fantastic birthday!",
+        "Here's to another year of love, growth, and endless possibilities. Happy Birthday!",
+        "May your birthday be the start of an extraordinary journey filled with happiness and success.",
+        "Here's to a day of celebration and making memories that last a lifetime. Happy Birthday!",
+        "Sending you warmest wishes and a big smile on your special day. Happy Birthday!",
+        "To the one who makes every day brighter, have a wonderful birthday!",
+        "Celebrate this special day with all the people who mean the world to you. Happy Birthday!",
+        "May your birthday be filled with joy, love, and all the things that bring you happiness.",
+        "Here's to a year of dreams coming true and adventures waiting to be explored. Happy Birthday!",
+        "Wishing you a day of happiness, surrounded by the people you love. Happy Birthday!",
+        "On your special day, know that you are loved and cherished by many. Happy Birthday!",
+        "To the one with a heart of gold, have an incredible birthday filled with love and laughter.",
+        "Happy Birthday! May this year be the best one yet, filled with all your heart's desires.",
+        "Another year of growth, wisdom, and blessings. Have a fantastic birthday!",
+        "May your birthday be as bright and beautiful as your soul. Happy Birthday!",
+        "To the one who lights up every room, have a fantastic birthday celebration!",
+        "Wishing you a day of joy, laughter, and all the things that make you happy. Happy Birthday!",
+        "May your birthday be a day of celebration, surrounded by love and warmth. Happy Birthday!",
+        "Here's to a year of love, laughter, and endless joy. Happy Birthday!",
+        "Sending you warm wishes and a big smile on your special day. Happy Birthday!",
+        "To a true gem, have an amazing birthday filled with love and happiness.",
+        "Happy Birthday! May this year be filled with dreams coming true and adventures ahead.",
+        "Another year of blessings and exciting possibilities. Have a fantastic birthday!",
+    ];
+
+    const greetingMessageElement = document.getElementById("greetingMessage");
+    const copyIconElement = document.getElementById("copyIcon");
+    const copyTextElement = document.getElementById("copyText");
+
+    function fadeIn() {
+    greetingMessageElement.style.opacity = "1";
+    greetingMessageElement.style.animation = "fadeIn 1s ease forwards";
+    }
+
+    function fadeOut() {
+    greetingMessageElement.style.animation = "fadeOut 1s ease forwards";
+    }
+
+    function displayRandomGreeting() {
+    fadeOut();
+    setTimeout(() => {
+        const randomIndex = Math.floor(
+        Math.random() * birthdayGreetings.length
+        );
+        greetingMessageElement.textContent = birthdayGreetings[randomIndex];
+        fadeIn();
+    }, 500); // The delay should match the duration of the fadeOut animation (1 second)
+    }
+
+    function copyToClipboard() {
+    const tempTextArea = document.createElement("textarea");
+    tempTextArea.value = greetingMessageElement.textContent;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempTextArea);
+
+    copyIconElement.innerHTML = '<i class="far fa-check-circle"></i>';
+    copyTextElement.textContent = "Copied!";
+    setTimeout(() => {
+        copyIconElement.innerHTML = '<i class="far fa-clipboard"></i>';
+        copyTextElement.textContent = "Copy";
+    }, 1500);
+    }
+
+    function setInitialGreeting() {
+    const randomIndex = Math.floor(
+        Math.random() * birthdayGreetings.length
+    );
+    greetingMessageElement.textContent = birthdayGreetings[randomIndex];
+    fadeIn();
+    }
+    setInitialGreeting();
+    </script>
+  </body>
+</html>
